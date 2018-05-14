@@ -98,7 +98,6 @@ class QtNGA(QMainWindow):
 
     @ExceptHandler(logger)
     def _start(self):
-        # TODO: QThread
         self.ui.bonusButton.setEnabled(False)
 
         thread = self.nga.Thread(self.tid)
