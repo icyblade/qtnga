@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGroupBox" name="settingsBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>781</width>
+      <height>291</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <widget class="QPushButton" name="startButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>200</y>
+       <width>81</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="stopButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>260</y>
+       <width>81</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="uidEdit">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>30</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>UID</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="uidLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>UID</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="cidLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>60</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>CID</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tidLabel">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>90</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TID</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="cidEdit">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>60</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="placeholderText">
+      <string>CID</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="tidEdit">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>90</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>TID</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="loginButton">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>170</y>
+       <width>81</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Login</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="duplicateCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>30</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>同UID重复加分</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep15RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>140</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+15</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep30RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>160</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+30</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep45RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>180</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+45</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep60RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>200</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+60</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep75RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>220</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+75</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep105RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>240</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+105</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep150RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>260</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+150</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="rvrcCheckBox">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>50</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>增加威望</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="goldCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>70</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>增加金钱</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="keywordEdit">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>30</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>只有包含这个关键词才会加分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="keywordLabel">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>30</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>不支持正则表达式</string>
+     </property>
+     <property name="text">
+      <string>加分关键词</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="imgCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>90</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>需要[img]</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="skipCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>110</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>如果楼层已经有加分（例如手动加的），则不对其进行加分</string>
+     </property>
+     <property name="text">
+      <string>跳过已加分楼层</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bonusButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>230</y>
+       <width>81</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>BONUS</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="maxFloorLabel">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>60</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>不支持正则表达式</string>
+     </property>
+     <property name="text">
+      <string>最大加分楼层</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="maxFloorEdit">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>60</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>只有小于等于这个楼层的才会加分</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="logBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>300</y>
+      <width>781</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Log</string>
+    </property>
+    <widget class="QTextEdit" name="logTextEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>761</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Courier New</family>
+      </font>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>550</y>
+      <width>781</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>0</number>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+    <property name="format">
+     <string>%v/%m %p%</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionExit"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
