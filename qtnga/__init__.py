@@ -1,31 +1,18 @@
 import logging
-import sys
-import traceback
+from queue import Queue
 
 from PyQt5 import uic
+from PyQt5.QtCore import QThreadPool
 from PyQt5.QtGui import QIntValidator
-from PyQt5.QtWidgets import QMainWindow, qApp, QRadioButton, QDesktopWidget, QApplication
+from PyQt5.QtWidgets import QMainWindow, qApp, QRadioButton, QDesktopWidget
 from pynga import NGA
 
 from logger import build_logger, QTextEditLogger
+from .helper import ExceptHandler
+from .logic import core_logic
+from .worker import Worker
 
 __version__ = '1.0.0'
-
-
-class ExceptHandler(object):
-    def __init__(self, logger):
-        self.logger = logger
-
-    def __call__(self, func):
-        def generate_errcode(*args, **kwargs):
-            # noinspection PyBroadException
-            try:
-                return func(*args[:-1], **kwargs)
-            except Exception:
-                self.logger.error('Error found, please send logs to @icyblade.')
-                self.logger.error(traceback.format_exc())
-
-        return generate_errcode
 
 
 class QtNGA(QMainWindow):
@@ -40,10 +27,14 @@ class QtNGA(QMainWindow):
         self.nga = None
         self._is_login = False
         self.bonus_data = None
+        self.worker = None
 
         self.ui = uic.loadUi('qtnga.ui', self)
         self.init_ui()
         self.init_logger()
+
+        self.thread_pool = QThreadPool()
+        self.thread_pool.setMaxThreadCount(1)
 
     def init_logger(self):
         self.logger.addHandler(QTextEditLogger(self.ui.logTextEdit))
@@ -73,6 +64,7 @@ class QtNGA(QMainWindow):
         self.ui.loginButton.clicked.connect(self._login)
         self.ui.startButton.clicked.connect(self._start)
         self.ui.bonusButton.clicked.connect(self._bonus)
+        self.ui.stopButton.clicked.connect(self._stop)
 
     @ExceptHandler(logger)
     def _login(self):
@@ -101,55 +93,59 @@ class QtNGA(QMainWindow):
         self.ui.bonusButton.setEnabled(False)
 
         thread = self.nga.Thread(self.tid)
-        total_posts = len(thread.posts.items()) - 1  # except main floor
         self.logger.info(f'Thread found: {thread.subject}')
 
-        self.ui.progressBar.setMaximum(total_posts)
+        result_queue, seen_uids = Queue(), Queue()
+        config = {
+            'duplicate': self.ui.duplicateCheckBox.isChecked(),
+            'img': self.ui.imgCheckBox.isChecked(),
+            'keyword': self.ui.keywordEdit.text(),
+            'max_floor': self.ui.maxFloorEdit.text(),
+        }
+        full_batch = [
+            (lou, post, seen_uids, config)
+            for lou, post in thread.posts.items()
+        ]
 
-        self.logger.info(f'Starting crawler...')
+        def total_ontrigger(total):
+            self.ui.progressBar.setMaximum(total)
 
-        seen_uids = set([])
-        data = []
-        for lou, post in thread.posts.items():
-            mask = True
+        def progress_ontrigger(index):
+            self.ui.progressBar.setValue(index + 1)
 
-            if lou == 0:
-                continue  # except main floor
-            elif not post.content:
-                continue  # except comment
+        def error_ontrigger(exception, traceback):
+            self.logger.error(traceback)
+            self.logger.error(exception)
 
-            if post.user.uid is None:  # except anonymous user
-                mask &= False
-            elif post.user.uid in seen_uids and not self.ui.duplicateCheckBox.isChecked():
-                mask &= False
-            else:
-                seen_uids.add(post.user.uid)
-
-            if self.ui.imgCheckBox.isChecked() and post.content.find('[img]') == -1:
-                mask &= False
-
-            keyword = self.ui.keywordEdit.text()
-            if keyword and post.content.find(keyword) == -1:
-                mask &= False
-
-            if self.ui.maxFloorEdit.text() and lou > int(self.ui.maxFloorEdit.text()):
-                mask &= False
-
+        def result_ontrigger(result):
+            lou, post, mask = result
             if mask:
-                data.append((lou, post))
-            self.logger.debug(f'[{"!" if mask else "X"}] {lou} {post.user.username}: {post.content[:30]}...')
-            self.ui.progressBar.setValue(lou)
+                result_queue.put(result)
 
-        total_todo = len(data)
+            content_sample = post.content.replace('<br>', '').replace('<br/>', '')[:30]
+            self.logger.debug(f'[{"!" if mask else "X"}] {lou} {post.user.username}: {content_sample}...')
 
-        self.logger.info(f'DONE, {total_todo} posts to be bonus-ed')
+        def done_ontrigger():
+            self.bonus_data = [
+                (lou, post)
+                for lou, post, mask in list(result_queue.queue)
+            ]
+            self.ui.bonusButton.setEnabled(True)
+            self.logger.info(f'DONE, {len(self.bonus_data)} posts to be bonus-ed')
 
-        self.bonus_data = data
-        self.ui.bonusButton.setEnabled(True)
+        self.worker = Worker(core_logic, full_batch)
+        self.worker.signals.total.connect(total_ontrigger)
+        self.worker.signals.progress.connect(progress_ontrigger)
+        self.worker.signals.error.connect(error_ontrigger)
+        self.worker.signals.result.connect(result_ontrigger)
+        self.worker.signals.done.connect(done_ontrigger)
+
+        self.thread_pool.start(self.worker)
 
     @ExceptHandler(logger)
     def _stop(self):
-        pass
+        if self.worker:
+            self.worker.signals.force_stop.emit()
 
     @ExceptHandler(logger)
     def _bonus(self):
@@ -199,10 +195,3 @@ class QtNGA(QMainWindow):
         center_point = QDesktopWidget().screenGeometry().center()
         frame_geo.moveCenter(center_point)
         self.move(frame_geo.topLeft())
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = QtNGA()
-    window.show()
-    sys.exit(app.exec_())
