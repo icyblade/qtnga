@@ -17,54 +17,22 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="settingsBox">
+   <widget class="QGroupBox" name="authBox">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>781</width>
-      <height>291</height>
+      <width>161</width>
+      <height>141</height>
      </rect>
     </property>
     <property name="title">
-     <string>Settings</string>
+     <string>Authentication</string>
     </property>
-    <widget class="QPushButton" name="startButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>690</x>
-       <y>200</y>
-       <width>81</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="stopButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>690</x>
-       <y>260</y>
-       <width>81</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Stop</string>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="uidEdit">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>30</x>
        <y>30</y>
        <width>113</width>
        <height>20</height>
@@ -80,8 +48,8 @@
     <widget class="QLabel" name="uidLabel">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>30</y>
+       <x>10</x>
+       <y>33</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -93,8 +61,8 @@
     <widget class="QLabel" name="cidLabel">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>60</y>
+       <x>10</x>
+       <y>63</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -103,23 +71,10 @@
       <string>CID</string>
      </property>
     </widget>
-    <widget class="QLabel" name="tidLabel">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>90</y>
-       <width>47</width>
-       <height>13</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TID</string>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="cidEdit">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>30</x>
        <y>60</y>
        <width>113</width>
        <height>20</height>
@@ -135,288 +90,27 @@
       <string>CID</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="tidEdit">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>90</y>
-       <width>113</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="placeholderText">
-      <string>TID</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="loginButton">
      <property name="geometry">
       <rect>
-       <x>690</x>
-       <y>170</y>
-       <width>81</width>
-       <height>23</height>
+       <x>10</x>
+       <y>100</y>
+       <width>141</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
       <string>Login</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="duplicateCheckBox">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>30</y>
-       <width>111</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>同UID重复加分</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="rep15RadioButton">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>140</y>
-       <width>51</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>+15</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="rep30RadioButton">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>160</y>
-       <width>51</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>+30</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="rep45RadioButton">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>180</y>
-       <width>51</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>+45</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="rep60RadioButton">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>200</y>
-       <width>51</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>+60</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="rep75RadioButton">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>220</y>
-       <width>51</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>+75</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="rep105RadioButton">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>240</y>
-       <width>51</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>+105</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="rep150RadioButton">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>260</y>
-       <width>51</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>+150</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="rvrcCheckBox">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>50</y>
-       <width>111</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>增加威望</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="goldCheckBox">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>70</y>
-       <width>111</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>增加金钱</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="keywordEdit">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>30</y>
-       <width>113</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="placeholderText">
-      <string>只有包含这个关键词才会加分</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="keywordLabel">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>30</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>不支持正则表达式</string>
-     </property>
-     <property name="text">
-      <string>加分关键词</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="imgCheckBox">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>90</y>
-       <width>111</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>需要[img]</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="skipCheckBox">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>110</y>
-       <width>111</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>如果楼层已经有加分（例如手动加的），则不对其进行加分</string>
-     </property>
-     <property name="text">
-      <string>跳过已加分楼层</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="bonusButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>690</x>
-       <y>230</y>
-       <width>81</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>BONUS</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="maxFloorLabel">
-     <property name="geometry">
-      <rect>
-       <x>330</x>
-       <y>60</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>不支持正则表达式</string>
-     </property>
-     <property name="text">
-      <string>最大加分楼层</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="maxFloorEdit">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>60</y>
-       <width>113</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="placeholderText">
-      <string>只有小于等于这个楼层的才会加分</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="logBox">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>300</y>
-      <width>781</width>
-      <height>241</height>
+      <x>410</x>
+      <y>10</y>
+      <width>381</width>
+      <height>291</height>
      </rect>
     </property>
     <property name="title">
@@ -427,8 +121,8 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>761</width>
-       <height>211</height>
+       <width>361</width>
+       <height>261</height>
       </rect>
      </property>
      <property name="font">
@@ -437,7 +131,7 @@
       </font>
      </property>
      <property name="verticalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOn</enum>
+      <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
     </widget>
    </widget>
@@ -459,6 +153,367 @@
     <property name="format">
      <string>%v/%m %p%</string>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="configBox">
+    <property name="geometry">
+     <rect>
+      <x>179</x>
+      <y>10</y>
+      <width>221</width>
+      <height>291</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Configuration</string>
+    </property>
+    <widget class="QLineEdit" name="maxFloorEdit">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>80</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>只有小于等于这个楼层的才会加分</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="keywordEdit">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>只有包含这个关键词才会加分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="keywordLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>不支持正则表达式</string>
+     </property>
+     <property name="text">
+      <string>加分关键词</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="maxFloorLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>不支持正则表达式</string>
+     </property>
+     <property name="text">
+      <string>最大加分楼层</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep150RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>230</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+150</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep15RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>110</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+15</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep30RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>130</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+30</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep60RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>170</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+60</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep45RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>150</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+45</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep105RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>210</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+105</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rep75RadioButton">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>190</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>+75</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="skipCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>190</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>如果楼层已经有加分（例如手动加的），则不对其进行加分</string>
+     </property>
+     <property name="text">
+      <string>跳过已加分楼层</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="goldCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>增加金钱</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="imgCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>170</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>如果发帖人手动加了[img]但是没有图片，也会被加分</string>
+     </property>
+     <property name="text">
+      <string>需要[img]</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="rvrcCheckBox">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>增加威望</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="duplicateCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>同UID重复加分</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tidLabel">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TID</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="tidEdit">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>20</y>
+       <width>113</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>TID</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="controlBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>161</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Control</string>
+    </property>
+    <widget class="QPushButton" name="stopButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="bonusButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>BONUS</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="startButton">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="postBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>310</y>
+      <width>781</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Posts</string>
+    </property>
+    <widget class="QTableView" name="postsTableView">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>761</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

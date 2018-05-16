@@ -5,9 +5,7 @@ def core_logic(lou, post, seen_uids, config):
 
 
 def _generate_mask(lou, post, seen_uids, config):
-    if lou == 0:  # except main floor
-        return False
-    elif not post.content:  # except comment
+    if not post.content:  # except comment
         return False
 
     if post.user.uid is None:  # except anonymous user

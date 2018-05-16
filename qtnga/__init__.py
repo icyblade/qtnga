@@ -1,15 +1,17 @@
 import logging
 from queue import Queue
 
+import pandas as pd
 from PyQt5 import uic
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtGui import QIntValidator
-from PyQt5.QtWidgets import QMainWindow, qApp, QRadioButton, QDesktopWidget
+from PyQt5.QtWidgets import QMainWindow, qApp, QRadioButton, QDesktopWidget, QHeaderView
 from pynga import NGA
 
 from logger import build_logger, QTextEditLogger
 from .helper import ExceptHandler
 from .logic import core_logic
+from .table_model import PandasModel
 from .worker import Worker
 
 __version__ = '1.0.0'
@@ -17,6 +19,7 @@ __version__ = '1.0.0'
 
 class QtNGA(QMainWindow):
     logger = build_logger('QtNGA', logging.DEBUG)
+    posts_header = ['lou', 'pid', 'username', 'uid', 'content']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -66,6 +69,24 @@ class QtNGA(QMainWindow):
         self.ui.bonusButton.clicked.connect(self._bonus)
         self.ui.stopButton.clicked.connect(self._stop)
 
+        # posts
+        self._refresh_posts_from_queue(Queue())
+
+    def _refresh_posts_from_queue(self, queue):
+        """Refresh Posts box from Queue.
+
+        This is a thread-safe(I hope) method.
+        """
+        self.posts = pd.DataFrame(list(queue.queue), columns=self.posts_header)
+        model = PandasModel(self.posts)
+        self.ui.postsTableView.setModel(model)
+        self.ui.postsTableView.model().layoutChanged.emit()
+
+        self.ui.postsTableView.horizontalHeader().setSectionResizeMode(
+            self.posts_header.index('content'), QHeaderView.Stretch
+        )
+        self.ui.postsTableView.scrollToBottom()
+
     @ExceptHandler(logger)
     def _login(self):
         self.logger.debug(f'Login as UID: {self.uid}')
@@ -95,7 +116,7 @@ class QtNGA(QMainWindow):
         thread = self.nga.Thread(self.tid)
         self.logger.info(f'Thread found: {thread.subject}')
 
-        result_queue, seen_uids = Queue(), Queue()
+        result_queue, seen_uids, posts_queue = Queue(), Queue(), Queue()
         config = {
             'duplicate': self.ui.duplicateCheckBox.isChecked(),
             'img': self.ui.imgCheckBox.isChecked(),
@@ -105,6 +126,7 @@ class QtNGA(QMainWindow):
         full_batch = [
             (lou, post, seen_uids, config)
             for lou, post in thread.posts.items()
+            if lou > 0  # except main floor
         ]
 
         def total_ontrigger(total):
@@ -119,11 +141,12 @@ class QtNGA(QMainWindow):
 
         def result_ontrigger(result):
             lou, post, mask = result
+
+            posts_queue.put((lou, post.pid, post.user.username, post.user.uid, post.content[:30]))
             if mask:
                 result_queue.put(result)
 
-            content_sample = post.content.replace('<br>', '').replace('<br/>', '')[:30]
-            self.logger.debug(f'[{"!" if mask else "X"}] {lou} {post.user.username}: {content_sample}...')
+            self._refresh_posts_from_queue(posts_queue)
 
         def done_ontrigger():
             self.bonus_data = [
