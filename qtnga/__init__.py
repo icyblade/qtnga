@@ -1,5 +1,6 @@
 import logging
 from queue import Queue
+from time import time
 
 import pandas as pd
 from PyQt5 import uic
@@ -154,7 +155,7 @@ class QtNGA(QMainWindow):
                 for lou, post, mask in list(result_queue.queue)
             ]
             self.ui.bonusButton.setEnabled(True)
-            self.logger.info(f'DONE, {len(self.bonus_data)} posts to be bonus-ed')
+            self.logger.info(f'DONE, {len(self.bonus_data)} posts to be bonus-ed, {time() - self._start_time:.2f}s elapsed.')
 
         self.worker = Worker(core_logic, full_batch)
         self.worker.signals.total.connect(total_ontrigger)
@@ -163,6 +164,7 @@ class QtNGA(QMainWindow):
         self.worker.signals.result.connect(result_ontrigger)
         self.worker.signals.done.connect(done_ontrigger)
 
+        self._start_time = time()
         self.thread_pool.start(self.worker)
 
     @ExceptHandler(logger)
