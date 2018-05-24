@@ -7,11 +7,11 @@ from PyQt5 import uic
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtGui import QIntValidator
 from PyQt5.QtWidgets import QMainWindow, qApp, QRadioButton, QDesktopWidget, QHeaderView
+from logger import build_logger, QTextEditLogger
 from pynga import NGA
 
-from logger import build_logger, QTextEditLogger
 from .helper import ExceptHandler
-from .logic import core_logic
+from .logic import _generate_mask
 from .table_model import PandasModel
 from .worker import Worker
 
@@ -20,7 +20,7 @@ __version__ = '1.0.0'
 
 class QtNGA(QMainWindow):
     logger = build_logger('QtNGA', logging.DEBUG)
-    posts_header = ['lou', 'pid', 'username', 'uid', 'content']
+    posts_header = ['lou', 'pid', 'username', 'uid', 'content', 'mask']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -123,12 +123,13 @@ class QtNGA(QMainWindow):
             'img': self.ui.imgCheckBox.isChecked(),
             'keyword': self.ui.keywordEdit.text(),
             'max_floor': self.ui.maxFloorEdit.text(),
+            'skip': self.ui.skipCheckBox.isChecked(),
         }
-        full_batch = [
-            (lou, post, seen_uids, config)
-            for lou, post in thread.posts.items()
-            if lou > 0  # except main floor
-        ]
+
+        def func(lou, post):
+            mask = _generate_mask(lou, post, seen_uids, config)
+
+            return lou, post, mask
 
         def total_ontrigger(total):
             self.ui.progressBar.setMaximum(total)
@@ -143,7 +144,7 @@ class QtNGA(QMainWindow):
         def result_ontrigger(result):
             lou, post, mask = result
 
-            posts_queue.put((lou, post.pid, post.user.username, post.user.uid, post.content[:30]))
+            posts_queue.put((lou, post.pid, post.user.username, post.user.uid, post.content[:30], mask))
             if mask:
                 result_queue.put(result)
 
@@ -155,9 +156,11 @@ class QtNGA(QMainWindow):
                 for lou, post, mask in list(result_queue.queue)
             ]
             self.ui.bonusButton.setEnabled(True)
-            self.logger.info(f'DONE, {len(self.bonus_data)} posts to be bonus-ed, {time() - self._start_time:.2f}s elapsed.')
 
-        self.worker = Worker(core_logic, full_batch)
+            elapsed = time() - self._start_time
+            self.logger.info(f'DONE, {len(self.bonus_data)} posts to be bonus-ed, {elapsed:.2f}s elapsed.')
+
+        self.worker = Worker(func, thread.posts.items())
         self.worker.signals.total.connect(total_ontrigger)
         self.worker.signals.progress.connect(progress_ontrigger)
         self.worker.signals.error.connect(error_ontrigger)
@@ -182,13 +185,37 @@ class QtNGA(QMainWindow):
             options.append('增加/扣除金钱')
 
         self.logger.info('Starting mass bonus...')
+        self.ui.startButton.setEnabled(False)
 
-        self.ui.progressBar.setMaximum(len(self.bonus_data))
-        for index, (lou, post) in enumerate(self.bonus_data):
+        def func(lou, post):
             post.add_point(reputation, info=f'QtNGA/{__version__}', options=options)
+
+        def total_ontrigger(total):
+            self.ui.progressBar.setMaximum(total)
+
+        def progress_ontrigger(index):
             self.ui.progressBar.setValue(index + 1)
 
-        self.logger.info('DONE')
+        def error_ontrigger(exception, traceback):
+            self.logger.error(traceback)
+            self.logger.error(exception)
+
+        def result_ontrigger(result):
+            pass
+
+        def done_ontrigger():
+            self.ui.startButton.setEnabled(True)
+            self.logger.info(f'DONE, {time() - self._start_time:.2f}s elapsed.')
+
+        self.worker = Worker(func, self.bonus_data)
+        self.worker.signals.total.connect(total_ontrigger)
+        self.worker.signals.progress.connect(progress_ontrigger)
+        self.worker.signals.error.connect(error_ontrigger)
+        self.worker.signals.result.connect(result_ontrigger)
+        self.worker.signals.done.connect(done_ontrigger)
+
+        self._start_time = time()
+        self.thread_pool.start(self.worker)
 
     def _configure_bonus(self):
         radios = [15, 30, 45, 60, 75, 105, 150]

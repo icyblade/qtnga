@@ -1,4 +1,4 @@
 PyQt5
-pynga
+pynga>=2.1.3
 pandas
 wrapt

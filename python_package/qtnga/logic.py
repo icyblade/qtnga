@@ -1,9 +1,3 @@
-def core_logic(lou, post, seen_uids, config):
-    mask = _generate_mask(lou, post, seen_uids, config)
-
-    return lou, post, mask
-
-
 def _generate_mask(lou, post, seen_uids, config):
     if not post.content:  # except comment
         return False
@@ -22,6 +16,9 @@ def _generate_mask(lou, post, seen_uids, config):
         return False
 
     if config['max_floor'] and lou > int(config['max_floor']):
+        return False
+
+    if config['skip'] and 'A' in [alterinfo['action'] for alterinfo in post.alterinfo]:
         return False
 
     return True
