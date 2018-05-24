@@ -20,7 +20,14 @@ __version__ = '1.0.0'
 
 class QtNGA(QMainWindow):
     logger = build_logger('QtNGA', logging.DEBUG)
-    posts_header = ['lou', 'pid', 'username', 'uid', 'content', 'mask']
+    posts_header = [
+        ('lou', int),
+        ('pid', int),
+        ('username', str),
+        ('uid', int),
+        ('content', str),
+        ('mask', bool),
+    ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -71,6 +78,7 @@ class QtNGA(QMainWindow):
         self.ui.stopButton.clicked.connect(self._stop)
 
         # posts
+        self.ui.postsTableView.setSortingEnabled(True)
         self._refresh_posts_from_queue(Queue())
 
     def _refresh_posts_from_queue(self, queue):
@@ -78,13 +86,18 @@ class QtNGA(QMainWindow):
 
         This is a thread-safe(I hope) method.
         """
-        self.posts = pd.DataFrame(list(queue.queue), columns=self.posts_header)
+        self.posts = pd.DataFrame(list(queue.queue), columns=[col for col, dtype in self.posts_header])
+        for col, dtype in self.posts_header:
+            self.posts[col] = self.posts[col].astype(dtype)
+
         model = PandasModel(self.posts)
+        if self.ui.postsTableView.model():
+            self.ui.postsTableView.model().layoutAboutToBeChanged.emit()
         self.ui.postsTableView.setModel(model)
         self.ui.postsTableView.model().layoutChanged.emit()
 
         self.ui.postsTableView.horizontalHeader().setSectionResizeMode(
-            self.posts_header.index('content'), QHeaderView.Stretch
+            [col for col, dtype in self.posts_header].index('content'), QHeaderView.Stretch
         )
         self.ui.postsTableView.scrollToBottom()
 
@@ -227,7 +240,7 @@ class QtNGA(QMainWindow):
                 break
 
         if self.ui.rvrcCheckBox.isChecked():
-            self.logger.error(f'二哥说了不要加威望')
+            self.logger.error('二哥说了不要加威望')
         add_rvrc = False
         add_gold = self.ui.goldCheckBox.isChecked()
 

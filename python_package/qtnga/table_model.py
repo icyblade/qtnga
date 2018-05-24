@@ -23,3 +23,11 @@ class PandasModel(QAbstractTableModel):
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
             return self._data.columns[col]
         return None
+
+    def sort(self, p_int, order=None):
+        self.layoutAboutToBeChanged.emit()
+        self._data = self._data.sort_values(
+            self._data.columns[p_int],
+            ascending=(order == Qt.AscendingOrder)
+        )
+        self.layoutChanged.emit()
