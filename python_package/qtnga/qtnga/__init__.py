@@ -1,3 +1,4 @@
+import json
 import logging
 from queue import Queue
 from time import time
@@ -7,15 +8,14 @@ from PyQt5 import uic
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtGui import QIntValidator
 from PyQt5.QtWidgets import QMainWindow, qApp, QRadioButton, QDesktopWidget, QHeaderView
-from logger import build_logger, QTextEditLogger
 from pynga import NGA
 
-from .helper import ExceptHandler
+from .__version__ import __version__
+from .helper import ExceptHandler, abspath
+from .logger import build_logger, QTextEditLogger
 from .logic import _generate_mask
 from .table_model import PandasModel
 from .worker import Worker
-
-__version__ = '1.0.0'
 
 
 class QtNGA(QMainWindow):
@@ -40,7 +40,7 @@ class QtNGA(QMainWindow):
         self.bonus_data = None
         self.worker = None
 
-        self.ui = uic.loadUi('qtnga.ui', self)
+        self.ui = uic.loadUi(abspath('qtnga/qtnga.ui'), self)
         self.init_ui()
         self.init_logger()
 
@@ -70,6 +70,18 @@ class QtNGA(QMainWindow):
         self.ui.cidEdit.textChanged[str].connect(self._set_cid)
         self.tid = self.ui.tidEdit.text()
         self.ui.tidEdit.textChanged[str].connect(self._set_tid)
+
+        try:
+            config_path = './config.json'
+            with open(config_path, 'r') as f:
+                json_data = json.load(f)
+
+            if 'uid' in json_data:
+                self.ui.uidEdit.setText(str(json_data['uid']))
+            if 'cid' in json_data:
+                self.ui.cidEdit.setText(str(json_data['cid']))
+        except FileNotFoundError:
+            pass
 
         # buttons
         self.ui.loginButton.clicked.connect(self._login)
@@ -157,7 +169,11 @@ class QtNGA(QMainWindow):
         def result_ontrigger(result):
             lou, post, mask = result
 
-            posts_queue.put((lou, post.pid, post.user.username, post.user.uid, post.content[:30], mask))
+            posts_queue.put((
+                lou, post.pid, post.user.username, post.user.uid,
+                post.content[:30] if post.content is not None else '',
+                mask
+            ))
             if mask:
                 result_queue.put(result)
 

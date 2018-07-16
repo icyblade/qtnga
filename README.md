@@ -6,6 +6,14 @@ PC Client of NGA
 - PyQt5
 - PyNGA (https://github.com/icyblade/pynga)
 
+## Run
+
+Run directly:
+```python python_package/qtnga/main.py```
+
+Or run via pyinstaller:
+```pyinstaller --clean python_package/qtnga/pyinstaller.spec```
+
 ## TODO
 
 - multi-thread

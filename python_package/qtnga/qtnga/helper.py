@@ -1,6 +1,17 @@
+import os
+import sys
 import traceback
 
 import wrapt
+
+
+def abspath(path):
+    try:
+        base = sys._MEIPASS
+    except AttributeError:
+        base = '.'
+
+    return os.path.abspath(os.path.join(base, path))
 
 
 def ExceptHandler(logger):
