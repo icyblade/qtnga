@@ -107,3 +107,6 @@ target/
 # PyCharm
 .idea/
 venv/
+
+# project
+python_package/qtnga/config.json
