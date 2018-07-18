@@ -17,6 +17,5 @@ Or run via pyinstaller:
 ## TODO
 
 - multi-thread
-- Binary releases and `setup.py`
 - Lots of code refactoring, especially bonus logics
 - etc

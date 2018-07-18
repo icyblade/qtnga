@@ -1,7 +1,7 @@
 __title__ = 'qtnga'
 __description__ = 'PC Client of NGA'
 __url__ = 'http://github.com/icyblade/qtnga'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 __author__ = 'Icyblade Dai'
 __author_email__ = 'icyblade.aspx@gmail.com'
 __license__ = 'MIT'

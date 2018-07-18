@@ -7,6 +7,7 @@ import wrapt
 
 def abspath(path):
     try:
+        # noinspection PyProtectedMember
         base = sys._MEIPASS
     except AttributeError:
         base = '.'
@@ -14,7 +15,7 @@ def abspath(path):
     return os.path.abspath(os.path.join(base, path))
 
 
-def ExceptHandler(logger):
+def except_handler(logger):
     @wrapt.decorator
     def wrapper(wrapped, instance, args, kwargs):
         # noinspection PyBroadException

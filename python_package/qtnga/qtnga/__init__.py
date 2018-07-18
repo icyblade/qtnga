@@ -11,9 +11,9 @@ from PyQt5.QtWidgets import QMainWindow, qApp, QRadioButton, QDesktopWidget, QHe
 from pynga import NGA
 
 from .__version__ import __version__
-from .helper import ExceptHandler, abspath
+from .helper import except_handler, abspath
 from .logger import build_logger, QTextEditLogger
-from .logic import _generate_mask
+from .logic import generate_mask, MASK_CODE
 from .table_model import PandasModel
 from .worker import Worker
 
@@ -21,12 +21,12 @@ from .worker import Worker
 class QtNGA(QMainWindow):
     logger = build_logger('QtNGA', logging.DEBUG)
     posts_header = [
-        ('lou', int),
-        ('pid', int),
-        ('username', str),
-        ('uid', int),
-        ('content', str),
-        ('mask', bool),
+        {'name': 'lou', 'dtype': int, 'display_name': '楼层', 'default_width': 20},
+        {'name': 'pid', 'dtype': int, 'display_name': 'PID', 'default_width': 70},
+        {'name': 'username', 'dtype': str, 'display_name': '用户名', 'default_width': 100},
+        {'name': 'uid', 'dtype': int, 'display_name': 'UID', 'default_width': 70},
+        {'name': 'content', 'dtype': str, 'display_name': '帖子内容', 'default_width': 330},
+        {'name': 'mask', 'dtype': str, 'display_name': '不加分原因', 'default_width': 130},
     ]
 
     def __init__(self, *args, **kwargs):
@@ -92,15 +92,20 @@ class QtNGA(QMainWindow):
         # posts
         self.ui.postsTableView.setSortingEnabled(True)
         self._refresh_posts_from_queue(Queue())
+        for index, header in enumerate(self.posts_header):
+            self.ui.postsTableView.setColumnWidth(index, header['default_width'])
+
+    def _locate_header(self, name):
+        return [i['name'] for i in self.posts_header].index(name)
 
     def _refresh_posts_from_queue(self, queue):
         """Refresh Posts box from Queue.
 
         This is a thread-safe(I hope) method.
         """
-        self.posts = pd.DataFrame(list(queue.queue), columns=[col for col, dtype in self.posts_header])
-        for col, dtype in self.posts_header:
-            self.posts[col] = self.posts[col].astype(dtype)
+        self.posts = pd.DataFrame(list(queue.queue), columns=[i['display_name'] for i in self.posts_header])
+        for i in self.posts_header:
+            self.posts[i['display_name']] = self.posts[i['display_name']].astype(i['dtype'])
 
         model = PandasModel(self.posts)
         if self.ui.postsTableView.model():
@@ -108,12 +113,9 @@ class QtNGA(QMainWindow):
         self.ui.postsTableView.setModel(model)
         self.ui.postsTableView.model().layoutChanged.emit()
 
-        self.ui.postsTableView.horizontalHeader().setSectionResizeMode(
-            [col for col, dtype in self.posts_header].index('content'), QHeaderView.Stretch
-        )
         self.ui.postsTableView.scrollToBottom()
 
-    @ExceptHandler(logger)
+    @except_handler(logger)
     def _login(self):
         self.logger.debug(f'Login as UID: {self.uid}')
         self.nga = NGA(authentication={'uid': self.uid, 'cid': self.cid})
@@ -135,7 +137,7 @@ class QtNGA(QMainWindow):
         self.ui.stopButton.setEnabled(value)
         self._is_login = value
 
-    @ExceptHandler(logger)
+    @except_handler(logger)
     def _start(self):
         self.ui.bonusButton.setEnabled(False)
 
@@ -152,7 +154,7 @@ class QtNGA(QMainWindow):
         }
 
         def func(lou, post):
-            mask = _generate_mask(lou, post, seen_uids, config)
+            mask = generate_mask(lou, post, seen_uids, config)
 
             return lou, post, mask
 
@@ -172,9 +174,9 @@ class QtNGA(QMainWindow):
             posts_queue.put((
                 lou, post.pid, post.user.username, post.user.uid,
                 post.content[:30] if post.content is not None else '',
-                mask
+                MASK_CODE[mask]
             ))
-            if mask:
+            if mask == 0:
                 result_queue.put(result)
 
             self._refresh_posts_from_queue(posts_queue)
@@ -199,12 +201,12 @@ class QtNGA(QMainWindow):
         self._start_time = time()
         self.thread_pool.start(self.worker)
 
-    @ExceptHandler(logger)
+    @except_handler(logger)
     def _stop(self):
         if self.worker:
             self.worker.signals.force_stop.emit()
 
-    @ExceptHandler(logger)
+    @except_handler(logger)
     def _bonus(self):
         reputation, add_rvrc, add_gold = self._configure_bonus()
         options = ['给作者发送PM']
