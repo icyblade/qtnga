@@ -26,7 +26,7 @@ setup(
     ],
     install_requires=[
         'PyQt5',
-        'pynga>=2.1.3',
+        'pynga>=2.1.4',
         'pandas',
         'wrapt',
     ],

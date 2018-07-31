@@ -13,7 +13,7 @@ def generate_mask(lou, post, seen_uids, config):
     if not post.content:  # except comment
         return 10
 
-    if post.user.uid is None:  # except anonymous user
+    if post.user.is_anonymous:  # except anonymous user
         return 20
     elif post.user.uid in set(seen_uids.queue) and not config['duplicate']:  ## TODO: performance
         return 30
