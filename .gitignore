@@ -109,5 +109,8 @@ target/
 .idea/
 venv/
 
+# vscode
+.vscode/
+
 # project
 python_package/qtnga/config.json

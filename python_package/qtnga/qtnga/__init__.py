@@ -3,18 +3,17 @@ import logging
 from queue import Queue
 from time import time
 
-import pandas as pd
 from PyQt5 import uic
 from PyQt5.QtCore import QThreadPool
 from PyQt5.QtGui import QIntValidator
-from PyQt5.QtWidgets import QMainWindow, qApp, QRadioButton, QDesktopWidget, QHeaderView
+from PyQt5.QtWidgets import QMainWindow, qApp, QRadioButton, QDesktopWidget
 from pynga import NGA
 
 from .__version__ import __version__
 from .helper import except_handler, abspath
 from .logger import build_logger, QTextEditLogger
 from .logic import generate_mask, MASK_CODE
-from .table_model import PandasModel
+from .table_model import QueueModel
 from .worker import Worker
 
 
@@ -103,11 +102,11 @@ class QtNGA(QMainWindow):
 
         This is a thread-safe(I hope) method.
         """
-        self.posts = pd.DataFrame(list(queue.queue), columns=[i['display_name'] for i in self.posts_header])
-        for i in self.posts_header:
-            self.posts[i['display_name']] = self.posts[i['display_name']].astype(i['dtype'])
-
-        model = PandasModel(self.posts)
+        model = QueueModel(
+            queue,
+            [i['display_name'] for i in self.posts_header],
+            dict([(i['display_name'], i['dtype']) for i in self.posts_header])
+        )
         if self.ui.postsTableView.model():
             self.ui.postsTableView.model().layoutAboutToBeChanged.emit()
         self.ui.postsTableView.setModel(model)
