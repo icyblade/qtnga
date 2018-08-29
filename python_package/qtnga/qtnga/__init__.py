@@ -218,7 +218,9 @@ class QtNGA(QMainWindow):
         self.ui.startButton.setEnabled(False)
 
         def func(lou, post):
-            post.add_point(reputation, info=f'QtNGA/{__version__}', options=options)
+            result = post.add_point(reputation, info=f'QtNGA/{__version__}', options=options)
+            if 'error' in result:
+                self.logger.error('Error: ' + ', '.join(result['error'].values()))
 
         def total_ontrigger(total):
             self.ui.progressBar.setMaximum(total)
