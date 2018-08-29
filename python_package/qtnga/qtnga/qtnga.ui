@@ -363,10 +363,10 @@
       </rect>
      </property>
      <property name="toolTip">
-      <string>如果发帖人手动加了[img]但是没有图片，也会被加分</string>
+      <string>[img]及图片类型附件均可。如果发帖人手动加了[img]但是没有图片，也会被加分</string>
      </property>
      <property name="text">
-      <string>需要[img]</string>
+      <string>需要图片</string>
      </property>
     </widget>
     <widget class="QCheckBox" name="rvrcCheckBox">

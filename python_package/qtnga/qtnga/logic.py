@@ -3,7 +3,7 @@ MASK_CODE = {
     10: '贴条',
     20: '匿名',
     30: '重复回帖',
-    40: '无[img]',
+    40: '无图片',
     50: '无关键词',
     60: '超过最大加分楼层',
     70: '已有加分记录',
@@ -20,8 +20,10 @@ def generate_mask(lou, post, seen_uids, config):
     else:
         seen_uids.put(post.user.uid)
 
-    if config['img'] and post.content.find('[img]') == -1:
-        return 40
+    if config['img']:
+        has_img = (post.content.find('[img]') != -1) or ('img' in [i['type'] for i in post.attachments])
+        if not has_img:
+            return 40
 
     if config['keyword'] and post.content.find(config['keyword']) == -1:
         return 50
