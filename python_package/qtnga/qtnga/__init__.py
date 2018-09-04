@@ -259,8 +259,8 @@ class QtNGA(QMainWindow):
                 break
 
         if self.ui.rvrcCheckBox.isChecked():
-            self.logger.error('二哥说了不要加威望')
-        add_rvrc = False
+            self.logger.warn('二哥说了不要加威望')
+        add_rvrc = self.ui.rvrcCheckBox.isChecked()
         add_gold = self.ui.goldCheckBox.isChecked()
 
         return reputation, add_rvrc, add_gold
